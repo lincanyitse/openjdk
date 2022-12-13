@@ -6,8 +6,6 @@ ARG SOURCES_URL="mirrors.aliyun.com"
 
 RUN set -eux \
     && sed -i "s/\w\+.debian.org/${SOURCES_URL}/g" /etc/apt/sources.list \
-    && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo Asia/Shanghai > /etc/timezone \
     && apt-get update -qq && apt-get install -qqy --no-install-recommends \
     curl \
     ca-certificates \
@@ -34,7 +32,7 @@ RUN set -eux; \
             downloadSha256="$(curl -sL ${downloadUrl}.sha256.txt|awk '{print $1}')"; \
             ;; \
         'arm64') \
-            downloadUrl=${JDK_URL}/jdk${JAVA_VERSION}-${JAVA_VERSION_SUFFIX}/OpenJDK8U-${JDK_TYPE}_aarrch64_linux_hotspot_${JAVA_VERSION}${JAVA_VERSION_SUFFIX}.tar.gz; \
+            downloadUrl=${JDK_URL}/jdk${JAVA_VERSION}-${JAVA_VERSION_SUFFIX}/OpenJDK8U-${JDK_TYPE}_aarch64_linux_hotspot_${JAVA_VERSION}${JAVA_VERSION_SUFFIX}.tar.gz; \
             downloadSha256="$(curl -sL - ${downloadUrl}.sha256.txt|awk '{print $1}')"; \
             ;; \
         'armhf') \
