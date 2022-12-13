@@ -10,7 +10,7 @@ RUN set -eux \
     curl \
     ca-certificates \
     p11-kit \
-    fontconfig libfreetype6 \
+    fontconfig libfreetype6 libatomic1 \
     locales ttf-wqy-zenhei >/dev/null \
     && rm -rf /var/lib/apt/lists/* \
     && echo -e 'LANG="zh_CN.UTF-8"\nLANGUAGE="zh_CN:zh"' >/etc/default/locale
