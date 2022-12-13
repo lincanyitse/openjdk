@@ -14,8 +14,7 @@ RUN set -eux \
     p11-kit \
     fontconfig libfreetype6 libatomic1 \
     locales ttf-wqy-zenhei >/dev/null \
-    && rm -rf /var/lib/apt/lists/* \
-    && echo -e 'LANG="zh_CN.UTF-8"\nLANGUAGE="zh_CN:zh"' >/etc/default/locale
+    && rm -rf /var/lib/apt/lists/*
 
 ENV JAVA_HOME /usr/lib/jvm/default-java
 ENV JRE_HOME ${JAVA_HOME}
