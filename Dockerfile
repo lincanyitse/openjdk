@@ -3,7 +3,7 @@ FROM debian:bullseye-slim
 ARG JDK_TYPE="jre"
 ARG JDK_URL="https://github.com/adoptium/temurin8-binaries/releases/download"
 ARG SOURCES_URL="mirrors.aliyun.com"
-ARG version="8u352"
+ARG version="8u392"
 ARG version_suffix="b08"
 
 RUN set -eux \
@@ -14,8 +14,7 @@ RUN set -eux \
     p11-kit \
     fontconfig libfreetype6 libatomic1 \
     locales ttf-wqy-zenhei >/dev/null \
-    && rm -rf /var/lib/apt/lists/* \
-    && echo -e 'LANG="zh_CN.UTF-8"\nLANGUAGE="zh_CN:zh"' >/etc/default/locale
+    && rm -rf /var/lib/apt/lists/*
 
 ENV JAVA_HOME /usr/lib/jvm/default-java
 ENV JRE_HOME ${JAVA_HOME}
@@ -79,4 +78,3 @@ RUN set -eux; \
 	ldconfig; \
     # basic smoke test
 	java -version
-
