@@ -3,6 +3,8 @@ FROM debian:bullseye-slim
 ARG JDK_TYPE="jre"
 ARG JDK_URL="https://github.com/adoptium/temurin8-binaries/releases/download"
 ARG SOURCES_URL="mirrors.aliyun.com"
+ARG version="8u352"
+ARG version_suffix="b08"
 
 RUN set -eux \
     && sed -i "s/\w\+.debian.org/${SOURCES_URL}/g" /etc/apt/sources.list \
@@ -21,8 +23,8 @@ ENV PATH ${JAVA_HOME}/bin:${PATH}
 
 ENV LANG C.UTF-8
 
-ENV JAVA_VERSION 8u352 
-ENV JAVA_VERSION_SUFFIX b08
+ENV JAVA_VERSION ${version} 
+ENV JAVA_VERSION_SUFFIX ${version_suffix}
 
 RUN set -eux; \
     arch="$(dpkg --print-architecture)"; \
