@@ -3,8 +3,8 @@ FROM debian:bullseye-slim
 ARG JDK_TYPE="jdk"
 ARG JDK_URL="https://github.com/adoptium/temurin8-binaries/releases/download"
 ARG SOURCES_URL="mirrors.aliyun.com"
-ARG version="8u372"
-ARG version_suffix="b07"
+ARG version="8u382"
+ARG version_suffix="b05"
 
 RUN set -eux \
     && sed -i "s/\w\+.debian.org/${SOURCES_URL}/g" /etc/apt/sources.list \
