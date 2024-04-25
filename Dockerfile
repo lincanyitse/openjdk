@@ -1,6 +1,6 @@
 FROM debian:bullseye-slim
 
-ARG JDK_TYPE="jre"
+ARG JDK_TYPE="jdk"
 ARG JDK_URL="https://github.com/adoptium/temurin8-binaries/releases/download"
 ARG SOURCES_URL="mirrors.aliyun.com"
 ARG version="8u412"
