@@ -1,8 +1,28 @@
 name: Build and Publish Docker
 on: 
-  push:
-    tags:
-      - '**'
+  workflow_dispatch:
+    inputs:
+      java_type:
+        description: 'Build Openjdk Image Type'
+        required: false
+        default: 'jdk'
+        type: string
+      java_version: 
+        description: 'Build Openjdk Image Version'
+        required: false
+        default: '8u412'
+        type: string
+      java_version_suffix:
+        description: 'Build Openjdk Image Version Suffix'
+        required: false
+        default: 'b08'
+        type: string
+      java_download_url:
+        description: 'Build Openjdk Image Download URL'
+        required: false
+        default: 'https://github.com/adoptium/temurin8-binaries/releases/download'
+        type: string
+      
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub and private service warehouse
@@ -13,10 +33,10 @@ jobs:
       - name: Set Docker Tag
         id: set_tag
         run: |
-          TAG=${GITHUB_REF#refs/tags/}
-          TAG=${TAG#*-}
+          TAG=${{ github.event.inputs.java_type }}
+          VERSION_TAG=${{ github.event.inputs.java_version }}-$TAG
           echo "::set-output name=latest::$TAG"
-          echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
+          echo "::set-output name=tag::$VERSION_TAG"
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -38,6 +58,11 @@ jobs:
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           context: .
           push: true
+          build-args: |
+            java_type=${{ github.event.inputs.java_type }}
+            java_url=${{ github.event.inputs.java_download_url }}
+            version=${{ github.event.inputs.java_version }}
+            version_suffix=${{ github.event.inputs.java_version_suffix }}
           tags: |
             ${{ secrets.DOCKER_REGISTRY }}/openjdk:8-${{ steps.set_tag.outputs.latest }}
             ${{ secrets.PRIVATE_REGISTRY }}/openjdk:8-${{ steps.set_tag.outputs.latest }}
