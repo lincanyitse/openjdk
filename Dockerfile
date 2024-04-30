@@ -5,6 +5,7 @@ ARG java_url="https://github.com/adoptium/temurin8-binaries/releases/download"
 ARG SOURCES_URL="mirrors.aliyun.com"
 ARG version="8u392"
 ARG version_suffix="b08"
+ARG is_install=0
 
 RUN set -eux && \
     sed -i "s/\w\+.debian.org/${SOURCES_URL}/g" /etc/apt/sources.list.d/debian.sources && \
@@ -29,7 +30,9 @@ ENV JAVA_VERSION_SUFFIX ${version_suffix}
 
 COPY docker-entrypoint.sh /
 COPY docker-entrypoint.d /docker-entrypoint.d
-RUN chmod +x /docker-entrypoint.sh /docker-entrypoint.d/*
+RUN chmod +x /docker-entrypoint.sh /docker-entrypoint.d/* && \
+    if [ ${is_install} -eq 1 ];then /docker-entrypoint.d/10-check-jvm.sh;fi
+    
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD ["java","-version"]

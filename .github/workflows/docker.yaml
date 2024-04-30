@@ -22,7 +22,16 @@ on:
         required: false
         default: 'https://github.com/adoptium/temurin8-binaries/releases/download'
         type: string
-      
+      java_installed:
+        description: 'Build Openjdk Image Installed'
+        required: false
+        default: 1
+        type: number
+      os_type: 
+        description: 'Build Openjdk Image OS Type'
+        required: false
+        default: 'debian'
+        type: string
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub and private service warehouse
@@ -33,7 +42,7 @@ jobs:
       - name: Set Docker Tag
         id: set_tag
         run: |
-          TAG=${{ github.event.inputs.java_type }}
+          TAG=${{ github.event.inputs.java_type }}-${{ github.event.inputs.os_type }}
           VERSION_TAG=${{ github.event.inputs.java_version }}-$TAG
           echo "::set-output name=latest::$TAG"
           echo "::set-output name=tag::$VERSION_TAG"
@@ -63,6 +72,7 @@ jobs:
             java_url=${{ github.event.inputs.java_download_url }}
             version=${{ github.event.inputs.java_version }}
             version_suffix=${{ github.event.inputs.java_version_suffix }}
+            is_install=${{ github.event.inputs.java_installed }}
           tags: |
             ${{ secrets.DOCKER_REGISTRY }}/openjdk:8-${{ steps.set_tag.outputs.latest }}
             ${{ secrets.PRIVATE_REGISTRY }}/openjdk:8-${{ steps.set_tag.outputs.latest }}
