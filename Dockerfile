@@ -3,14 +3,16 @@ FROM debian:stable-slim
 ARG java_type="jdk"
 ARG java_url="https://github.com/adoptium/temurin8-binaries/releases/download"
 ARG SOURCES_URL="mirrors.ustc.edu.cn"
-ARG version="8u392"
+ARG version="8u412"
 ARG version_suffix="b08"
 ARG is_install=0
 ENV APT_SOURCES_URL=${SOURCES_URL}
 
 RUN set -eux && \
-    sed -i "s/\w\+.debian.org/${APT_SOURCES_URL}/g" /etc/apt/sources.list.d/debian.sources && \
-    apt-get update -qq && apt-get install -qqy --no-install-recommends \
+    if [ -f '/etc/apt/sources.list' ];then sed -i "s/\w\+.debian.org/${APT_SOURCES_URL}/g" /etc/apt/sources.list; \
+    elif [ -f '/etc/apt/sources.list.d/debian.sources' ];then sed -i "s/\w\+.debian.org/${APT_SOURCES_URL}/g" /etc/apt/sources.list.d/debian.sources; \
+    fi; \
+    apt-get update && apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
     p11-kit \
